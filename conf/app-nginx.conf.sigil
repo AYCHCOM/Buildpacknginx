@@ -13,21 +13,22 @@ http {
   server {
     listen {{ $.PORT }};
     server_name  _;
-    {{ if ne $.NGINX_ROOT "" }}
-      root /app/www/{{ $.NGINX_ROOT }};
-    {{ else }}
-      root /app/www;
-    {{ end }}
-    index index.html;
-    port_in_redirect off;
+    set $ext www;
+    if (-d /app/www/_site){
+      set $ext www/_site;
+    }
+    root /app/$ext;
 
+    index index.html index.html index.php;
+    port_in_redirect off;
+    
     location /services/ping {
        return 200 'WEB PONG';
        access_log off;
     }
 
     location / {
-      try_files $uri $uri/ /index.html _site/index.html;
+      try_files $uri $uri/ /index.html;
     }
   }
 }

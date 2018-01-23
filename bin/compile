@@ -19,7 +19,7 @@ suppress() {
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
-STATIC_DIR=$(cat .static)
+STATIC_DIR=$(cat $BUILD_DIR/.static)
 CUR_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
 
 
@@ -30,7 +30,6 @@ if [[ ! -e "${BUILD_DIR}/www" ]]; then
   rm -rf "${CACHE_DIR}/www"
   mkdir -p "${CACHE_DIR}/www"
 
-  # shellcheck disable=SC2086
   if [ -z "$STATIC_DIR" ]; then
         mv $BUILD_DIR/* "${CACHE_DIR}/www"
   else
