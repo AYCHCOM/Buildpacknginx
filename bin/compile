@@ -22,6 +22,9 @@ CACHE_DIR=$2
 STATIC_DIR=$(cat $BUILD_DIR/.static)
 CUR_DIR=$(cd "$(dirname "$0")"; cd ..; pwd)
 
+if [[ -f "${BUILD_DIR}/.precompile" && -x $(realpath "${BUILD_DIR}/.precompile") ]]; then
+  "${BUILD_DIR}/.precompile"
+fi
 
 mkdir -p "$BUILD_DIR" "$CACHE_DIR"
 
@@ -181,3 +184,4 @@ fi
 exec /app/nginx/nginx -p /app/nginx -c /app/nginx/nginx.conf
 EOF
 chmod +x "$BUILD_DIR/start_nginx"
+
